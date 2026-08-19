@@ -1,15 +1,31 @@
 CREATE EXTENSION IF NOT EXISTS vector;
 
-CREATE TABLE IF NOT EXISTS document_chunks_claude_llm
-(
+CREATE TABLE IF NOT EXISTS documents (
+    document_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    file_name VARCHAR(500),
+    file_hash VARCHAR(64),
+    uploaded_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS document_chunks_claude_llm (
     id BIGSERIAL PRIMARY KEY,
-
     file_name VARCHAR(255),
-
     chunk_text TEXT,
-
     embedding VECTOR(768)
 );
+
+CREATE TABLE IF NOT EXISTS document_chunks_v1 (
+    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    document_id BIGINT,
+    chunk_index INT,
+    chunk_text TEXT,
+    chunk_hash VARCHAR(64),
+    embedding VECTOR(768),
+    CONSTRAINT fk_document_chunks_document
+        FOREIGN KEY (document_id)
+        REFERENCES documents(document_id)
+);
+
 
 CREATE TABLE IF NOT EXISTS rag_audit (
     id BIGSERIAL PRIMARY KEY,
