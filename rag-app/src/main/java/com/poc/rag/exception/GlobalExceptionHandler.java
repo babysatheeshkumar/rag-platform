@@ -25,6 +25,10 @@ public class GlobalExceptionHandler {
                 ));
     }
 
+    public ResponseEntity<ErrorResponse> handleDuplicateFile(Exception ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse("DUPLICATE_FILE", ex.getMessage()));
+    }
+
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ErrorResponse> handleFileTypeNotSupported(IllegalArgumentException ex) {
 
@@ -36,25 +40,19 @@ public class GlobalExceptionHandler {
             code = "ILLEGAL_ARGUMENT";
         }
 
-        return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body(new ErrorResponse(code, ex.getMessage()
-                ));
-
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(code, ex.getMessage()));
 
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> handleGeneric(
-            Exception ex) {
+    public ResponseEntity<ErrorResponse> handleGeneric(Exception ex) {
 
         log.error("Unexpected error", ex);
 
-        return ResponseEntity
-                .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(new ErrorResponse(
-                        "INTERNAL_ERROR",
-                        "Unexpected error occurred"
-                ));
+        if (ex instanceof DuplicateFileException) {
+            return handleDuplicateFile(ex);
+        }
+
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorResponse("INTERNAL_ERROR","Unexpected error occurred"));
     }
 }

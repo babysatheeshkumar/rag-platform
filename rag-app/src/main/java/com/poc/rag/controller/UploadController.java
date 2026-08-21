@@ -40,7 +40,7 @@ public class UploadController {
             @RequestParam MultipartFile file)
             throws Exception {
 
-        service.saveDocument(file);
+        service.ingestDocumentToRAG(file);
 
         return "Document uploaded Successfully";
     }

@@ -22,6 +22,7 @@ public class FilePromptTemplateProvider implements PromptTemplateProvider {
     public String loadTemplate(String model) {
 
         try {
+            log.info("Loading prompt from resource file");
             Resource resource = resourceLoader.getResource("classpath:prompts/" + model + ".prompt");
             return new String(resource.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
 

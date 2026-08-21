@@ -7,7 +7,7 @@ app:
 
   llm:
     prompt:
-      source: db
+      source:
     active-model: ${CLAUDE_MODEL}
 
 springdoc:
@@ -17,6 +17,9 @@ springdoc:
     enabled: ${SWAGGER_UI}
 
 spring:
+  servlet:
+    multipart:
+      max-file-size: 5MB
   application:
     name: rag-demo
 

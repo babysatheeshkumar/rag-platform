@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table
+@Table(name = "document_chunks_v1")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -18,7 +18,11 @@ public class DocumentChunk {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String fileName;
+    @Column(columnDefinition = "document_id")
+    private Long documentId;
+
+    @Column(columnDefinition = "chunk_index")
+    private Integer chunkIndex;
 
     @Column(columnDefinition = "TEXT")
     private String chunkText;
