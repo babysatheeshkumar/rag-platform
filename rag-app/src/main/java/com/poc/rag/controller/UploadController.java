@@ -1,6 +1,7 @@
 package com.poc.rag.controller;
 
 import com.poc.rag.service.DocumentService;
+import com.poc.rag.service.LargeDocumentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -20,6 +21,8 @@ import org.springframework.web.multipart.MultipartFile;
 public class UploadController {
 
     private final DocumentService service;
+
+    private final LargeDocumentService largeDocumentService;
 
     @Operation(
             summary = "Upload a document",
@@ -41,6 +44,32 @@ public class UploadController {
             throws Exception {
 
         service.ingestDocumentToRAG(file);
+
+        return "Document uploaded Successfully";
+    }
+
+    @Operation(
+            summary = "Upload a document",
+            description = "Uploads a PDF or text document into a datasource and store the file metadata " +
+                          "into DB and document_id pushed to kafka topic." +
+                          "Returns the file status. Later kafka consumes document_id and does " +
+                          "process(content extraction, chunking, embedding and vector store)"
+    )
+    @ApiResponse(responseCode = "200", description = "Document uploaded successfully")
+    @PostMapping(
+            value = "/upload-large-file",
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE
+    )
+    public String uploadLargeFile(
+            @Parameter(
+                    description = "Large Document file to upload. File size greater than 1MB",
+                    content = @Content(
+                            schema = @Schema(type = "string", format = "binary")
+                    )
+            )
+            @RequestParam MultipartFile file) throws Exception {
+
+        largeDocumentService.uploadDocument(file);
 
         return "Document uploaded Successfully";
     }

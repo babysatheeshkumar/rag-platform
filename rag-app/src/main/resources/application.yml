@@ -1,4 +1,6 @@
 app:
+  file-storage:
+    provider: s3
   table-name: document_chunks_claude_llm
   input-token-limit: ${CLAUDE_MODEL_INPUT_TOKEN_LIMIT}
   similarity-threshold: ${THRESHOLD}
@@ -10,6 +12,14 @@ app:
       source:
     active-model: ${CLAUDE_MODEL}
 
+aws:
+  access-key: ${AWS_ACCESS_KEY_ID}
+  secret-key: ${AWS_SECRET_ACCESS_KEY}
+  region: ${AWS_REGION}
+  s3:
+    bucket-name: documents
+    endpoint: http://minio:9000
+
 springdoc:
   api-docs:
     enabled: ${SWAGGER_API_DOCS}
@@ -19,7 +29,7 @@ springdoc:
 spring:
   servlet:
     multipart:
-      max-file-size: 5MB
+      max-file-size: ${MAX_FILE_SIZE_UPLOAD}
   application:
     name: rag-demo
 

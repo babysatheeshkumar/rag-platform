@@ -33,6 +33,21 @@ public class Document {
     @Column(name = "file_name", length = 500)
     private String fileName;
 
+    @Column(name = "file_size")
+    private Long fileSize;
+
+    @Column(name = "content_type", length = 50)
+    private String contentType;
+
+    @Column(name = "processing_status", length = 20)
+    private String processingStatus;
+
+    @Column(name = "source_file_location", length = 50)
+    private String sourceFileLocation;
+
+    @Column(name = "storage_name", length = 20)
+    private String storageName;
+
     @Column(name = "file_hash", length = 64)
     private String fileHash;
 

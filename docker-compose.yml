@@ -45,12 +45,16 @@ services:
 
     environment:
 
+      AWS_ACCESS_KEY_ID: admin
+      AWS_SECRET_ACCESS_KEY: admin123
+      AWS_REGION: us-east-1
       THRESHOLD: ${THRESHOLD}
       EMBEDDING_MODEL: ${EMBEDDING_MODEL}
       TOP_CHUNK: ${TOP_CHUNK}
       CHUNK_SIZE: ${CHUNK_SIZE}
       SWAGGER_UI: ${SWAGGER_UI}
       SWAGGER_API_DOCS: ${SWAGGER_API_DOCS}
+      MAX_FILE_SIZE_UPLOAD: ${MAX_FILE_SIZE_UPLOAD}
 
       CLAUDE_MODEL: ${CLAUDE_MODEL}
       CLAUDE_MODEL_INPUT_TOKEN_LIMIT: ${CLAUDE_MODEL_INPUT_TOKEN_LIMIT}
@@ -76,7 +80,25 @@ services:
 
     restart: unless-stopped
 
+  minio:
+    image: minio/minio:latest
+    container_name: minio
+
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+
+    environment:
+      MINIO_ROOT_USER: admin
+      MINIO_ROOT_PASSWORD: admin123
+
+    command: server /data --console-address ":9001"
+
+    volumes:
+      - minio_data:/data
+
 volumes:
   postgres_data:
   pgadmin_data:
   ollama_data:
+  minio_data:

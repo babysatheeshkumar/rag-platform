@@ -12,14 +12,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.jspecify.annotations.Nullable;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import org.apache.pdfbox.Loader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,8 +26,6 @@ import java.util.Optional;
 public class DocumentService {
 
     private final EmbeddingService embeddingService;
-
-    private final JdbcTemplate jdbcTemplate;
 
     private final RecursiveTextChunker recursiveTextChunker;
 
@@ -53,8 +48,8 @@ public class DocumentService {
         for(int chunkIndex = 0; chunkIndex < chunks.size(); chunkIndex++) {
             String chunk = chunks.get(chunkIndex);
             float[] vector = embeddingService.embed(chunk);
-            String vectorString = Arrays.toString(vector);
-            save(documentId, chunkIndex, chunk, vectorString);
+            //String vectorString = Arrays.toString(vector);
+            save(documentId, chunkIndex, chunk, vector);
         }
     }
 
@@ -121,7 +116,7 @@ public class DocumentService {
         return chunks;
     }
 
-    private void save(Long documentId, Integer chunkIndex, String chunk, String vectorString) {
+    private void save(Long documentId, Integer chunkIndex, String chunk, float[] vectorString) {
 
         DocumentChunk documentChunk = new DocumentChunk();
         documentChunk.setDocumentId(documentId);

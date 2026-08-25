@@ -28,5 +28,5 @@ public class DocumentChunk {
     private String chunkText;
 
     @Column(columnDefinition = "vector(768)")
-    private String embedding;
+    private float[] embedding;
 }
