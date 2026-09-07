@@ -92,6 +92,7 @@ public class RagService {
         Instant start = Instant.now();
         String answer = "";
         try {
+            log.info("Chat Client Instance : {}", chatClient);
             answer = chatClient.prompt()
                     .user(prompt)
                     .call()

@@ -23,6 +23,8 @@ public class FilePromptTemplateProvider implements PromptTemplateProvider {
 
         try {
             log.info("Loading prompt from resource file");
+            // TODO: Hard coding model name. Later change dynamically
+            model = "prompt-v1";
             Resource resource = resourceLoader.getResource("classpath:prompts/" + model + ".prompt");
             return new String(resource.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
 

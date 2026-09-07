@@ -1,11 +1,4 @@
-FROM eclipse-temurin:21-jdk
-
-# Install Tesseract OCR
-#RUN apt-get update && \
-#    apt-get install -y \
-#        tesseract-ocr \
-#        tesseract-ocr-eng && \
-#    rm -rf /var/lib/apt/lists/*
+FROM eclipse-temurin:21-jre-alpine
 
 WORKDIR /app
 

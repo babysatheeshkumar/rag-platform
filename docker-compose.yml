@@ -57,6 +57,7 @@ services:
       MAX_FILE_SIZE_UPLOAD: ${MAX_FILE_SIZE_UPLOAD}
 
       CLAUDE_MODEL: ${CLAUDE_MODEL}
+      OLLAMA_MODEL: ${OLLAMA_MODEL}
       CLAUDE_MODEL_INPUT_TOKEN_LIMIT: ${CLAUDE_MODEL_INPUT_TOKEN_LIMIT}
       API_KEY: ${ANTHROPIC_API_KEY}
 
@@ -77,6 +78,13 @@ services:
 
     volumes:
       - ollama_data:/root/.ollama
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [ gpu ]
 
     restart: unless-stopped
 

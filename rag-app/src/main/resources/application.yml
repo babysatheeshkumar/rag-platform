@@ -1,7 +1,7 @@
 app:
   file-storage:
     provider: s3
-  table-name: document_chunks_claude_llm
+  table-name: document_chunks_v1
   input-token-limit: ${CLAUDE_MODEL_INPUT_TOKEN_LIMIT}
   similarity-threshold: ${THRESHOLD}
   top-chunk: ${TOP_CHUNK}
@@ -10,7 +10,7 @@ app:
   llm:
     prompt:
       source:
-    active-model: ${CLAUDE_MODEL}
+    active-model: ${OLLAMA_MODEL}
 
 aws:
   access-key: ${AWS_ACCESS_KEY_ID}
@@ -44,7 +44,7 @@ spring:
 
   ai:
     model:
-      chat: anthropic
+      chat: ollama
     anthropic:
       api-key: ${API_KEY}
 
@@ -56,6 +56,9 @@ spring:
       embedding:
         options:
           model: ${EMBEDDING_MODEL}
+      chat:
+        options:
+          model: ${OLLAMA_MODEL}
     #openai:
     #  api-key: ${OPENAI_API_KEY}
 
